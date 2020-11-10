@@ -11,9 +11,41 @@ public class Sorting extends Thread
 		this.end = end;
 	}
 	
-	public void run()
+	public void parallelMerge(int[] ar, int begin, int end, int numOfThreads)
 	{
-		this.mergeSort(ar, begin, end);
+		if(numOfThreads <= 1)
+		{
+			mergeSort(ar, begin, end);
+		}
+		int middle = (begin+end)/2;
+		
+		Thread leftSorter = mergeSortParallel(ar, begin, middle, numOfThreads);
+		Thread rightSorter = mergeSortParallel(ar, middle +1, end, numOfThreads);
+		
+		leftSorter.start();
+		rightSorter.start();
+		
+		try
+		{
+			leftSorter.join();
+			rightSorter.join();
+		}
+		catch(Exception e)
+		{
+			System.err.println("Bruh it didn't work");
+		}
+		merge(ar, begin, middle, middle +1, end );
+	}
+	
+	public Thread mergeSortParallel(int[] ar, int begin, int end, int numOfThreads)
+	{
+		return new Thread()
+				{
+					public void run()
+					{
+						parallelMerge(ar, begin, end, numOfThreads);
+					}
+				};
 	}
 	
 	public void mergeSort(int[] ar, int begin, int end)
@@ -26,7 +58,7 @@ public class Sorting extends Thread
 			int end2 = end;
 			this.mergeSort(ar, begin1, end1);
 			this.mergeSort(ar, begin2, end2);
-			this.merge(ar, begin1, end1, begin2, end2);
+			
 		}
 		
 	}

@@ -5,14 +5,15 @@ public class Driver
 	public static void main(String[] args)
 	{
 		Random r = new Random();
-		int[] randomNums = new int[100];
+		int[] randomNums = new int[10];
 		
 		for(int i = 0; i < randomNums.length; i++)
 		{
 			randomNums[i] = r.nextInt(100);
 		}
 
-		Driver.mergeSort(randomNums, 0, randomNums.length -1);
+		Sorting sort = new Sorting(randomNums, 0, randomNums.length -1);
+		sort.parallelMerge(randomNums, 0, randomNums.length -1, 2);
 		
 		for(int k:randomNums)
 		{
