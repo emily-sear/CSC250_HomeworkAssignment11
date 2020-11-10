@@ -11,21 +11,39 @@ public class Driver
 		{
 			randomNums[i] = r.nextInt(100);
 		}
-
-		Sorting sort = new Sorting(randomNums, 0, randomNums.length -1);
-		sort.parallelMerge(randomNums, 0, randomNums.length -1, 2);
 		
-		for(int k:randomNums)
+		Sorting ogArray = new Sorting(randomNums);
+		Sorting left = ogArray.leftArray();
+		Sorting right = ogArray.rightArray();
+		
+		left.run();
+		right.run();
+		try 
 		{
-			System.out.println(k);
+			left.join();
+			right.join();
+
+			
+			int[] newArray = ogArray.puttingArraysBackTogether(left, right);
+			Driver.merge(newArray,	0, left.getArray().length, left.getArray().length +1  , newArray.length - 1);
+			for(int k: newArray)
+			{
+				System.out.println(k);
+			}
 		}
+		catch(Exception e)
+		{
+			System.err.println("For fucks sake");
+		}
+		
+		
+		
 		
 	}
 
 	static void mergeSort(int[] ar, int begin, int end)
 	{
-		Sorting sort1;
-		Sorting sort2;
+
 		if(begin != end)
 		{
 			
@@ -33,22 +51,12 @@ public class Driver
 			int end1 = begin + (end - begin) /2; 
 			int begin2 = end1 + 1;
 			int end2 = end;
-			sort1 = new Sorting(ar, begin1, end1);
-			sort2 = new Sorting(ar, begin2, end2);
-			sort1.start();
-			sort2.start();
-			try {
-			sort1.join();
-			sort2.join();
+			mergeSort(ar, begin1, end1);
+			mergeSort(ar, begin2, end2);
 			Driver.merge(ar, begin1, end1, begin2, end2);
 			}
-			catch(Exception e)
-			{
-				System.err.println("Bruh you messed up");
-			}
-			
 		}
-	}
+	
 
 	
 	static void merge(int[] ar, int begin1, int end1, int begin2, int end2)

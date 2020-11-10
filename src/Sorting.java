@@ -1,68 +1,73 @@
 public class Sorting extends Thread
 {
-	private int[] ar;
-	private int begin;
-	private int end;
+	private int[] array;
 	
-	public Sorting(int[] ar, int begin, int end)
+	public Sorting(int[] array)
 	{
-		this.ar = ar;
-		this.begin = begin;
-		this.end = end;
+		this.array = array;
 	}
 	
-	public void parallelMerge(int[] ar, int begin, int end, int numOfThreads)
+	public int[] getArray()
 	{
-		if(numOfThreads <= 1)
+		return array;
+	}
+	public Sorting leftArray()
+	{
+		int[] leftArray = new int[array.length/2];
+		for(int i = 0; i < leftArray.length; i++)
 		{
-			mergeSort(ar, begin, end);
+			leftArray[i] = array[i];
 		}
-		int middle = (begin+end)/2;
-		
-		Thread leftSorter = mergeSortParallel(ar, begin, middle, numOfThreads);
-		Thread rightSorter = mergeSortParallel(ar, middle +1, end, numOfThreads);
-		
-		leftSorter.start();
-		rightSorter.start();
-		
-		try
-		{
-			leftSorter.join();
-			rightSorter.join();
-		}
-		catch(Exception e)
-		{
-			System.err.println("Bruh it didn't work");
-		}
-		merge(ar, begin, middle, middle +1, end );
+		return new Sorting(leftArray);
 	}
 	
-	public Thread mergeSortParallel(int[] ar, int begin, int end, int numOfThreads)
+	public Sorting rightArray()
 	{
-		return new Thread()
-				{
-					public void run()
-					{
-						parallelMerge(ar, begin, end, numOfThreads);
-					}
-				};
+		int[] rightArray = new int[(array.length - array.length/2)];
+		int count = array.length/2;
+		for(int i = 0; i < rightArray.length; i++)
+		{
+			rightArray[i] = array[count];
+			count++;
+		}
+		return new Sorting(rightArray);
 	}
 	
-	public void mergeSort(int[] ar, int begin, int end)
+	public int[] puttingArraysBackTogether(Sorting leftArray, Sorting rightArray)
 	{
+		int[] finalArray = new int[(leftArray.getArray().length -1 ) + (rightArray.getArray().length -1)];
+		for(int i =0; i < leftArray.getArray().length; i++)
+		{
+			finalArray[i] = leftArray.getArray()[i];
+		}
+		int count = finalArray.length/2;
+		for(int i = 0; i < rightArray.getArray().length; i++)
+		{
+			finalArray[count] = rightArray.getArray()[i];
+		}
+		return finalArray;
+	}
+	
+	public void run()
+	{
+		mergeSort(this.array,0,this.array.length-1);
+	}
+	static void mergeSort(int[] ar, int begin, int end)
+	{
+
 		if(begin != end)
 		{
 			int begin1 = begin;
 			int end1 = begin + (end - begin) /2; 
 			int begin2 = end1 + 1;
 			int end2 = end;
-			this.mergeSort(ar, begin1, end1);
-			this.mergeSort(ar, begin2, end2);
-			
+			mergeSort(ar, begin1, end1);
+			mergeSort(ar, begin2, end2);
+			merge(ar, begin1, end1, begin2, end2);
+			}
 		}
-		
-	}
-	public void merge(int[] ar, int begin1, int end1, int begin2, int end2)
+
+	static void merge(int[] ar, int begin1, int end1, int begin2, int end2)
 	{
 		//assuming that everything from begin1 to begin 2 are already sorted and the same from end1 and end2
 		//Can't just take the length of the array that is passed in, because you could just be looking at a certain section 
@@ -113,4 +118,7 @@ public class Sorting extends Thread
 		}
 	
 	}
+	
+	
+	
 }
