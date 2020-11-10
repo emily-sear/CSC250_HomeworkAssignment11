@@ -35,15 +35,16 @@ public class Sorting extends Thread
 	
 	public int[] puttingArraysBackTogether(Sorting leftArray, Sorting rightArray)
 	{
-		int[] finalArray = new int[(leftArray.getArray().length -1 ) + (rightArray.getArray().length -1)];
-		for(int i =0; i < leftArray.getArray().length; i++)
+		int[] finalArray = new int[(leftArray.getArray().length) + (rightArray.getArray().length)];
+		for(int i = 0; i < leftArray.getArray().length; i++)
 		{
 			finalArray[i] = leftArray.getArray()[i];
 		}
 		int count = finalArray.length/2;
-		for(int i = 0; i < rightArray.getArray().length; i++)
+		for(int j = 0; j < rightArray.getArray().length; j++)
 		{
-			finalArray[count] = rightArray.getArray()[i];
+			finalArray[count] = rightArray.getArray()[j];
+			count++;
 		}
 		return finalArray;
 	}

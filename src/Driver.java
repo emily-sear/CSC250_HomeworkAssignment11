@@ -5,7 +5,7 @@ public class Driver
 	public static void main(String[] args)
 	{
 		Random r = new Random();
-		int[] randomNums = new int[10];
+		int[] randomNums = new int[100];
 		
 		for(int i = 0; i < randomNums.length; i++)
 		{
@@ -22,10 +22,27 @@ public class Driver
 		{
 			left.join();
 			right.join();
-
-			
+			/**
+			for(int j: left.getArray())
+			{
+				System.out.println(j);
+			}
+			System.out.println();
+			for(int m: right.getArray())
+			{
+				System.out.println(m);
+			}
+			System.out.println();
+			**/
 			int[] newArray = ogArray.puttingArraysBackTogether(left, right);
-			Driver.merge(newArray,	0, left.getArray().length, left.getArray().length +1  , newArray.length - 1);
+			/**
+			for(int n: newArray)
+			{
+				System.out.println(n);
+			}
+			System.out.println();
+			**/
+			Driver.merge(newArray,	0, (left.getArray().length -1 ), (left.getArray().length) , newArray.length - 1);
 			for(int k: newArray)
 			{
 				System.out.println(k);
@@ -33,7 +50,7 @@ public class Driver
 		}
 		catch(Exception e)
 		{
-			System.err.println("For fucks sake");
+			System.err.println("For goodness ;) sake");
 		}
 		
 		
