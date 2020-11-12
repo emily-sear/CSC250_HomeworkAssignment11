@@ -12,49 +12,24 @@ public class Driver
 			randomNums[i] = r.nextInt(100);
 		}
 		
-		Sorting ogArray = new Sorting(randomNums);
-		Sorting left = ogArray.leftArray();
-		Sorting right = ogArray.rightArray();
+		Sorting ogArray = new Sorting(randomNums, 0, randomNums.length - 1);
 		
-		left.run();
-		right.run();
-		try 
+		ogArray.start();
+		try
 		{
-			left.join();
-			right.join();
-			/**
-			for(int j: left.getArray())
+			ogArray.join();
+			for(int j = 0; j < ogArray.getArray().length; j++) 
 			{
-				System.out.println(j);
-			}
-			System.out.println();
-			for(int m: right.getArray())
-			{
-				System.out.println(m);
-			}
-			System.out.println();
-			**/
-			int[] newArray = ogArray.puttingArraysBackTogether(left, right);
-			/**
-			for(int n: newArray)
-			{
-				System.out.println(n);
-			}
-			System.out.println();
-			**/
-			Driver.merge(newArray,	0, (left.getArray().length -1 ), (left.getArray().length) , newArray.length - 1);
-			for(int k: newArray)
-			{
-				System.out.println(k);
+				System.out.println(ogArray.getArray()[j]);
 			}
 		}
 		catch(Exception e)
 		{
-			System.err.println("For goodness ;) sake");
+			e.printStackTrace();
 		}
 		
 		
-		
+
 		
 	}
 
